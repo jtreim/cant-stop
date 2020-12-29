@@ -64,6 +64,7 @@ class Player:
                         'players': [('Cameron', 1), ('Jeff', 0), ('Taylor', 2)],
                     }
                 }
+ 
         changes: Dictionary with all the changes since the turn began
                  Example: {
                     '2': 0,
@@ -78,6 +79,7 @@ class Player:
                     '11': 0,
                     '12': 1
                  }
+ 
         Returns: boolean stating whether the player will roll again or not
         """
         return not (random.randint(1, 6) == 1)
@@ -85,6 +87,11 @@ class Player:
     def choose_move(self, moves, board, changes, invalid_move=False):
         """
         Submits action for the game
+ 
+        moves: List of available moves for the player to choose from.
+               Example: [[5, 8], [6], [7], [4], [9]]
+                        (In the situation where the player rolled 1, 3, 4, & 5, has columns 5 & 8 started).
+ 
         board: Dictionary containing board information
                Example: {
                     '2': {
@@ -143,6 +150,7 @@ class Player:
                         'players': [('Cameron', 1), ('Jeff', 0), ('Taylor', 2)],
                     }
                 }
+  
         changes: Dictionary with all the changes since the turn began
                  Example: {
                     '2': 0,
@@ -157,6 +165,8 @@ class Player:
                     '11': 0,
                     '12': 1
                  }
+
+        invalid_move: A boolean flag stating whether the last submitted move was determined invalid.
 
         Returns: one of the moves in the list
         """
