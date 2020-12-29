@@ -85,6 +85,7 @@ You should see example inputs in the file, but as a reference the inputs are:
            '12': 1
          }
          ```
+
 The game expects back a boolean stating whether or not your player wants to keep rolling dice.
 
 ### Overriding the choose_move function
