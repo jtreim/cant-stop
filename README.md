@@ -1,14 +1,16 @@
 # cant-stop
-This is a framework for testing out the best Can't Stop AI player! All game logic can be found in the game.py, board.py, errors.py, and player.py files.
+This is a framework for testing out the best Can't Stop AI player! All game logic can be found in the [game.py](https://github.com/jtreim/cant-stop/blob/main/game.py), [board.py](https://github.com/jtreim/cant-stop/blob/main/board.py), [errors.py](https://github.com/jtreim/cant-stop/blob/main/errors.py), and [player.py](https://github.com/jtreim/cant-stop/blob/main/player.py) files.
 
 ## I wanna make a player!
-The base Player class (player.py) has everything ready to add more game logic. Simply subclass the Player class and override the is_continuing_turn and choose_move functions. No guarantees that your Player will still run if you mess with the other game files.
+The base [Player](https://github.com/jtreim/cant-stop/blob/main/player.py) class has everything ready to add more game logic. Simply subclass the Player class and override the is_continuing_turn and choose_move functions. No guarantees that your Player will still run if you mess with the other game files. My suggestion is that you clone the repo, make your own branch, make your own player file (e.g. "CameronsWinningestPlayer.py"), and we'll figure out how to add that in.
 
 ### Overriding the is_continuing_turn function
 You should see example inputs in the file, but as a reference the inputs are:
 
-board: Dictionary containing board information
-       Example: {
+- board: Dictionary containing board information.
+       Example: 
+       ```
+       {
          '2': {
                'value': 2,
                'steps': 3,
@@ -65,8 +67,11 @@ board: Dictionary containing board information
                 'players': [('Cameron', 1), ('Jeff', 0), ('Taylor', 2)],
               }
         }
-changes: Dictionary with all the changes since the turn began
-         Example: {
+        ```
+- changes: Dictionary with all the changes since the turn began.
+         Example: 
+         ```
+         {
            '2': 0,
            '3': 2,
            '4': 2,
@@ -79,17 +84,21 @@ changes: Dictionary with all the changes since the turn began
            '11': 0,
            '12': 1
          }
+         ```
 The game expects back a boolean stating whether or not your player wants to keep rolling dice.
 
 ### Overriding the choose_move function
 You should see example inputs in the files, but as a reference the inputs are:
 
-moves: List of integers containing available moves for the player.
-       Example: [[5,8], [6], [7], [4], [9]] (in the case that 1, 3, 4, & 5 are rolled, and the player has started columns 5 & 8)
+- moves: List of integers containing available moves for the player.
+       Example: ```[[5,8], [6], [7], [4], [9]]```
+                (in the case that 1, 3, 4, & 5 are rolled, and the player has started columns 5 & 8)
        The game will automatically end a turn if the player has no available moves.
 
-board: Dictionary containing board information
-       Example: {
+- board: Dictionary containing board information.
+       Example: 
+       ```
+       {
          '2': {
                'value': 2,
                'steps': 3,
@@ -146,9 +155,12 @@ board: Dictionary containing board information
                 'players': [('Cameron', 1), ('Jeff', 0), ('Taylor', 2)],
               }
         }
+        ```
 
-changes: Dictionary with all the changes since the turn began
-         Example: {
+- changes: Dictionary with all the changes since the turn began.
+         Example: 
+         ```
+         {
            '2': 0,
            '3': 2,
            '4': 2,
@@ -161,7 +173,8 @@ changes: Dictionary with all the changes since the turn began
            '11': 0,
            '12': 1
          }
+       ```
 
-invalid_move: A boolean flag stating whether the last move submitted was determined to be an invalid move by the game.
+- invalid_move: A boolean flag stating whether the last move submitted was determined to be an invalid move by the game.
 
 The game expects back a selected move from the list of moves given.
