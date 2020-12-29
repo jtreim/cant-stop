@@ -1,0 +1,7 @@
+ACTIVE_PLAYER  = 'active_player'
+BOARD          = 'board'
+ID             = 'id'
+MOVE           = 'move'
+MSG            = 'msg'
+PLAYER         = 'player'
+VALID_MOVE     = 'valid_move'
