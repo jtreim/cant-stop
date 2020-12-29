@@ -218,12 +218,17 @@ class CantStop:
                 changes = self.get_default_changes()
                 self.log_entry('{} cannot advance and ends their turn.'.format(name))
                 break
-            player_move = player.choose_move(moves)
+
+            # Don't let players mutate any moves, board states, or current changes
+            player_move = player.choose_move(
+                moves.copy(), self.board.json().copy(), changes.copy())
             move_attempts = 0
             while player_move not in moves and \
                     move_attempts < self.MAX_MOVE_ATTEMPTS:
                 move_attempts += 1
-                player_move = player.choose_move(moves, invalid_move=True)
+                player_move = player.choose_move(
+                    moves.copy(), self.board.json().copy(), changes.copy(),
+                    invalid_move=True)
             
             # Forcibly end turn if player attempts too many invalid moves
             if move_attempts >= self.MAX_MOVE_ATTEMPTS and player_move not in moves:
