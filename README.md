@@ -92,7 +92,7 @@ You should see example inputs in the files, but as a reference the inputs are:
 
 - moves: List of integers containing available moves for the player.
        Example: ```[[5,8], [6], [7], [4], [9]]```
-                (in the case that 1, 3, 4, & 5 are rolled, and the player has started columns 5 & 8)
+                (in the case that 1, 3, 4, & 5 are rolled, and the player has started columns 5 & 8).
        The game will automatically end a turn if the player has no available moves.
 
 - board: Dictionary containing board information.
