@@ -67,6 +67,7 @@ class Player:
  
         changes: Dictionary with all the changes since the turn began
                  Example: {
+                    'turn': 1,
                     '2': 0,
                     '3': 2,
                     '4': 2,
@@ -153,6 +154,7 @@ class Player:
   
         changes: Dictionary with all the changes since the turn began
                  Example: {
+                    'turn': 1,
                     '2': 0,
                     '3': 2,
                     '4': 2,

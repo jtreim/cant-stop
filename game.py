@@ -12,8 +12,10 @@ class CantStop:
     MAX_MOVE_ATTEMPTS = 3
     END_TURN = 'end_turn'
 
-    def __init__(self, names=None, verbose=False):
+    def __init__(self, player_classes=None, verbose=False):
         self.players = {}
+        self.player_classes = player_classes
+        self.names = []
         self.board = None
         self.is_finished = False
         self.finished_columns = {}
@@ -26,9 +28,8 @@ class CantStop:
         # Current turn is an index into turn order
         self.turn_order = []
         self.current_turn = 0
-        if names is not None:
-            self.names = names.copy()
-            self.reset(names)
+        if self.player_classes is not None:
+            self.reset(self.player_classes)
         else:
             self.names = []
 
@@ -55,15 +56,22 @@ class CantStop:
             return False
         return True
 
-    def reset(self, names=None):
+    def reset(self, player_classes=None):
+        # player_classes: List of tuples containing player classes and their names
         self.board = Board(names)
         self.is_finished = False
         self.current_turn = 0
         self.finished_columns = {}
         self.dropped_steps = {}
         self.turns_taken = {}
-        if self.names is not None:
-            self.players = { name: Player(name) for name in self.names }
+        self.player_classes = player_classes
+        self.names = []
+        if self.player_classes is not None:
+            for tup in self.player_classes:
+                player_class = tup[0]
+                player_name = tup[1]
+                self.players[player_name] = player_class(player_name)
+                self.names.append(player_name)
             self.turn_order = self.names.copy()
             self.finished_columns = { name: [] for name in self.names }
             self.dropped_steps = { name: {
@@ -244,7 +252,7 @@ class CantStop:
 
             # Add on any changes from the chosen move 
             changes = self.execute_move(name, player_move, changes)
-            if not player.is_continuing_turn(self.board.json(), changes):
+            if not player.is_continuing_turn(self.board.json(), changes.copy()):
                 player_move = self.END_TURN
         self.make_changes(changes, name)
 
