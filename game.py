@@ -178,6 +178,7 @@ class CantStop:
         default = {}
         for i in range(2, 13):
             default[str(i)] = 0
+        default['turn'] = 0
         return default
 
     def make_changes(self, changes, name):
@@ -209,6 +210,7 @@ class CantStop:
 
         # Let the player continue until they're finished
         while player_move != self.END_TURN:
+            changes['turn'] += 1
             self.turns_taken[name] += 1
             roll = self.get_roll()
             self.log_entry('{} rolls {}'.format(name, roll))
