@@ -2,7 +2,7 @@
 This is a framework for testing out the best Can't Stop AI player! All game logic can be found in the [game.py](https://github.com/jtreim/cant-stop/blob/main/game.py), [board.py](https://github.com/jtreim/cant-stop/blob/main/board.py), [errors.py](https://github.com/jtreim/cant-stop/blob/main/errors.py), and [player.py](https://github.com/jtreim/cant-stop/blob/main/player.py) files.
 
 ## I wanna make a player!
-The base [Player](https://github.com/jtreim/cant-stop/blob/main/player.py) class has everything ready to add more game logic. Simply subclass the Player class and override the is_continuing_turn and choose_move functions. No guarantees that your Player will still run if you mess with the other game files. My suggestion is that you clone the repo, make your own branch, make your own player file (e.g. "CameronsWinningestPlayer.py"), and we'll figure out how to add that in.
+The base [Player](https://github.com/jtreim/cant-stop/blob/main/player.py) class has everything ready to add more game logic. Simply subclass the Player class and override the is_continuing_turn and choose_move functions. No guarantees that your Player will still run if you mess with the other game files. My suggestion is that you clone the repo, make your own branch, make your own player file (e.g. "CameronsWinningestPlayer.py"), and we'll figure out how to add that in. If you need help, an example subclass can be found in the [example_player.py](https://github.com/jtreim/cant-stop/blob/main/example_player.py).
 
 ### Overriding the is_continuing_turn function
 You should see example inputs in the file, but as a reference the inputs are:
