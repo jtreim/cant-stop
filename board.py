@@ -11,10 +11,10 @@ class Column:
             self.states[player] = 0
         self.is_finished = False
 
-    def can_move_player(self, player):
+    def can_move_player(self, player, steps):
         return not self.is_finished and \
             player in self.states and \
-                self.states[player] < self.steps
+                self.states[player] + steps <= self.steps
 
     def check_for_finished(self):
         is_finished = False
@@ -27,9 +27,9 @@ class Column:
         return self.is_finished
 
     def advance_player(self, player, steps=1):
-        if not self.can_move_player(player) and not self.is_finished:
+        if player not in self.states:
             raise PlayerNotFoundError
-        if not self.can_move_player(player):
+        if not self.can_move_player(player, steps):
             raise ColumnFinishedError
 
         self.states[player] += steps
@@ -99,8 +99,8 @@ class Board:
                 finished.append(int(key))
         return finished
 
-    def can_move_player(self, name, col):
-        return self.columns[col].can_move_player(name)
+    def can_move_player(self, name, col, steps=1):
+        return self.columns[col].can_move_player(name, steps)
 
     def advance_player(self, name, col, steps):
         return self.columns[col].advance_player(name, steps=steps)

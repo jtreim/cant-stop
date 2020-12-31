@@ -17,3 +17,5 @@ class NotEnoughPlayersError(Exception):
 class InvalidMoveError(Exception):
     pass
 
+class GameNotReadyError(Exception):
+    pass

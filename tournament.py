@@ -52,7 +52,7 @@ class Tournament:
         results = self.game.play_game()
         for key in results.keys():
             self.stats[key]['total_matches'] += 1
-            if len(results[key]['finished']) == 3:
+            if len(results[key]['finished']) >= 3:
                 self.stats[key]['matches_won'] += 1
             self.stats[key]['win_rate'] = \
                 self.stats[key]['matches_won'] / self.stats[key]['total_matches']

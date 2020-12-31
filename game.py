@@ -111,11 +111,30 @@ class CantStop:
                 result.append(move)
         return result
 
-    def remove_finished_column_moves(self, moves):
+    def remove_finished_column_moves(self, moves, changes, player):
         # Remove moves that advance on a finished column
+        # Also consider past changes that finish a column
         result = []
         for move in moves:
-            result.append([m for m in move if m not in self.board.get_finished_columns()])
+            columns = []
+            # Consider double move on a single column
+            if len(move) == 2 and move[0] == move[1]:
+                col = str(move[0])
+                progress = changes[col] + 2
+                # Try to move twice
+                if self.board.can_move_player(player, col, progress):
+                    columns = move
+                # If not, try to move once
+                elif self.board.can_move_player(player, col, progress - 1):
+                    columns.append(move[0])
+            else:
+                for col in move:
+                    progress = changes[str(col)] + 1
+                    if self.board.can_move_player(player, str(col), progress):
+                        columns.append(col)
+            if columns:
+                result.append(columns)
+
         return result
 
     def remove_new_column_moves(self, moves):
@@ -129,21 +148,22 @@ class CantStop:
         # Split moves if player can only add one more column
         result = []
         for move in moves:
+            is_double_move = (len(move) == 2 and move[0] == move[1])
             has_active_column = False
             for col in move:
                 if col in self.active_columns:
                     has_active_column = True
                     break
-            if has_active_column:
+            if has_active_column or is_double_move:
                 result.append(move)
             else:
                 for col in move:
                     result.append([col])
         return result
 
-    def get_moves(self, roll):
+    def get_moves(self, roll, changes, player):
         moves = self.get_moves_from_roll(roll)
-        moves = self.remove_finished_column_moves(moves)
+        moves = self.remove_finished_column_moves(moves, changes, player)
         if len(self.active_columns) == 3:
             moves = self.remove_new_column_moves(moves)
         elif len(self.active_columns) == 2:
@@ -229,7 +249,7 @@ class CantStop:
             self.turns_taken[name] += 1
             roll = self.get_roll()
             self.log_entry('{} rolls {}'.format(name, roll))
-            moves = self.get_moves(roll)
+            moves = self.get_moves(roll, changes, name)
             if moves == [self.END_TURN]:
                 self.add_missed_steps(name, changes)
                 changes = self.get_default_changes()
