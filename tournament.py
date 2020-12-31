@@ -3,8 +3,8 @@ import random
 from errors import GameNotReadyError
 from game import CantStop
 
-from example_player import DumbPlayer
-from player import Player
+from players.example_player import DumbPlayer
+from players.player import Player
 
 
 class Tournament:

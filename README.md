@@ -72,6 +72,7 @@ You should see example inputs in the file, but as a reference the inputs are:
          Example: 
          ```
          {
+           'turn': 1,
            '2': 0,
            '3': 2,
            '4': 2,
@@ -162,6 +163,7 @@ You should see example inputs in the files, but as a reference the inputs are:
          Example: 
          ```
          {
+           'turn': 1,
            '2': 0,
            '3': 2,
            '4': 2,

@@ -1,5 +1,5 @@
 import random
-from player import Player
+from .player import Player
 
 class DumbPlayer(Player):
     def __init__(self, name):

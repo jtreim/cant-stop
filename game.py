@@ -4,7 +4,6 @@ from errors import (
     ColumnFinishedError, PlayerNotFoundError, BoardMissingError,
     NotEnoughPlayersError, InvalidMoveError)
 
-from player import Player
 from board import Board
 
 
