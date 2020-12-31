@@ -83,7 +83,7 @@ class Player:
  
         Returns: boolean stating whether the player will roll again or not
         """
-        return not (random.randint(1, 6) == 1)
+        return not (random.randint(1, 4) == 1)
 
     def choose_move(self, moves, board, changes, invalid_move=False):
         """

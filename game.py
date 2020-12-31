@@ -22,6 +22,7 @@ class CantStop:
         self.active_columns = []
         self.dropped_steps = {}
         self.turns_taken = {}
+        self.turns_dropped = {}
         self.verbose = verbose
 
         # Set order for turns to be taken
@@ -58,18 +59,20 @@ class CantStop:
 
     def reset(self, player_classes=None):
         # player_classes: List of tuples containing player classes and their names
-        self.board = Board(names)
+        # e.g. [('Jeff', JeffPlayer), ('Cameron', CameronPlayer)...]
+        self.board = None
         self.is_finished = False
         self.current_turn = 0
         self.finished_columns = {}
         self.dropped_steps = {}
         self.turns_taken = {}
+        self.turns_dropped = {}
         self.player_classes = player_classes
         self.names = []
         if self.player_classes is not None:
             for tup in self.player_classes:
-                player_class = tup[0]
-                player_name = tup[1]
+                player_name = tup[0]
+                player_class = tup[1]
                 self.players[player_name] = player_class(player_name)
                 self.names.append(player_name)
             self.turn_order = self.names.copy()
@@ -79,7 +82,9 @@ class CantStop:
                 'individual': self.get_default_changes()
             } for name in self.names }
             self.turns_taken = { name: 0 for name in self.names }
+            self.turns_dropped = { name: 0 for name in self.names }
             random.shuffle(self.turn_order)
+            self.board = Board(self.names)
 
     def get_roll(self):
         rolls = []
@@ -167,6 +172,7 @@ class CantStop:
         for name in self.names:
             results[name] = {}
             results[name]['finished'] = self.finished_columns[name]
+            results[name]['turns_dropped'] = self.turns_dropped[name]
             results[name]['steps_dropped'] = self.dropped_steps[name]
         return results
 
@@ -191,7 +197,7 @@ class CantStop:
 
     def make_changes(self, changes, name):
         for key in changes.keys():
-            if changes[key] == 0:
+            if changes[key] == 0 or key == 'turn':
                 continue
             did_finish = self.board.advance_player(name, key, changes[key])
             if did_finish:
@@ -203,6 +209,7 @@ class CantStop:
         for key in changes.keys():
             self.dropped_steps[name]['total'] += changes[key]
             self.dropped_steps[name]['individual'][key] += changes[key]
+        self.turns_dropped[name] += 1
 
     def next_turn(self):
         # Get the current player, advance turn tracker to next in line.
