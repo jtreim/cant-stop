@@ -6,6 +6,7 @@ from game import CantStop
 from players.example_player import DumbPlayer
 from players.CameronPlayer import CameronPlayer
 from players.player import Player
+from players.taylor_player import TaylorPlayer
 
 
 class Tournament:
@@ -80,6 +81,6 @@ class Tournament:
 if __name__ == '__main__':
     tournament = Tournament()
     tournament.add_player('Base', Player)
-    tournament.add_player('Dumb', DumbPlayer)
     tournament.add_player('Cameron', CameronPlayer)
+    tournament.add_player('Taylor player', TaylorPlayer)
     tournament.run()

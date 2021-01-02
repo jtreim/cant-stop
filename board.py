@@ -38,7 +38,7 @@ class Column:
     def retreat_player(self, player, steps=1):
         if player not in self.states:
             raise PlayerNotFoundError
-    
+
         self.states[player] -= steps
         if self.states[player] < 0:
             self.states[player] = 0
