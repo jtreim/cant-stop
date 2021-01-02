@@ -6,9 +6,7 @@ from .player import Player
  are 2x on the same number. It stops when all 3 numbers are in play """
 class TaylorPlayer(Player):
     def __init__(self, name):
-        self.pre_logic = 'I wanna be special, so here\'s an attribute I assign beforehand'
         super(TaylorPlayer, self).__init__(name)
-        self.post_logic = 'I wanna be extra special, so here\'s another attribute I assign later'
 
     def get_random_number(self):
         # A new function that the parent class doesn't have! I can use this internally
@@ -33,7 +31,6 @@ class TaylorPlayer(Player):
             if changes[key] > 0:
                 num = int(key)
                 cur_num.append(num)
-        print("turn", changes['turn'], "numbers changed: ", cur_num)
         return cur_num
 
     """ best moves is a dictionary of moves and how strongly they match the
@@ -60,16 +57,12 @@ class TaylorPlayer(Player):
     def choose_move(self, moves, board, changes, invalid_move=False):
         cur_num = self.which_numbers_changed(changes)
         best_moves = self.best_matched_moves(cur_num, moves)
-        print("moves: ", moves)
-        print("best matched moves: ", best_moves)
 
         # searches through the best_moves dictionary to find the highest ranked move
         return_move = [0,0] #[move index, move score]
         for move in best_moves.keys():
             if best_moves[move] > return_move[1]:
                 return_move = [move, best_moves[move]]
-
-        print("best move: ", return_move)
 
         # Always selects the first available move
         return moves[return_move[0]]

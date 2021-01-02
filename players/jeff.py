@@ -1,6 +1,13 @@
 from .player import Player
 
 class JeffPlayer(Player):
+    """
+    JeffPlayer focuses on the odds for continuing turns.
+    To pick which move, calculates a move value based on odds of continued
+    turns, moving forward less likely columns when possible, and winning
+    columns over opponents.
+    """
+
     ODDS = 'odds'
     ROLLS = 'rolls'
 
@@ -384,16 +391,12 @@ class JeffPlayer(Player):
     ROUGH_ODDS_THRESHOLD = .2
     DESPERATION_TURNS = 2
 
-    def count_finished_columns(self, board, changes):
-        count = 0
-        leader_progress, my_progress = self.get_progress(board, changes)
-        for key in leader_progress.keys():
-            if leader_progress['progress'] == 1.0:
-                count += 1
-        return count
-
     def get_progress(self, board, changes):
-        # Returns progress percentages for leader's & player's progress
+        """
+        Returns progress percentages for leader's & player's progress
+        Leaders are opponents farthest for each given column
+        """
+
         leader_progress = {}
         my_progress = {}
         for key in board.keys():
@@ -415,15 +418,11 @@ class JeffPlayer(Player):
             leader_progress[key]['progress'] = lead
         return leader_progress, my_progress
 
-    def get_steps(self, board, changes):
-        my_steps = {}
-        for key in board.keys():
-            for player in board[key]['players']:
-                if player[0] == self.name:
-                    my_steps[key] = player[1] + changes[key]
-        return my_steps
-
     def get_started_columns(self, changes):
+        """
+        Return list of columns that I've started according to changes
+        """
+
         started = []
         for col in changes.keys():
             if col == 'turn':
@@ -433,6 +432,11 @@ class JeffPlayer(Player):
         return sorted(started, key=lambda column: int(column))
 
     def get_finished_columns(self, board, my_progress):
+        """
+        Return a list of all columns finished, including those finished with
+        my current progress.
+        """
+
         finished = []
         for key in board.keys():
             for player in board[key]['players']:
@@ -443,6 +447,10 @@ class JeffPlayer(Player):
         return sorted(finished, key=lambda column: int(column))
 
     def continue_based_on_odds(self, started, turns):
+        """
+        Determine whether to continue simply based on optimal number of 
+        turns to take.
+        """
         if len(started) == 3:
             col1, col2, col3 = started[0], started[1], started[2]
             return self.THREE_COLUMN_ODDS[col1][col2][col3][self.ROLLS] > turns
@@ -452,7 +460,11 @@ class JeffPlayer(Player):
         return self.ONE_COLUMN_ODDS[started[0]][self.ROLLS] > turns
 
     def continue_based_on_new_column(self, board, started, finished, turns):
-        # Continues based on chances of getting a new valid column
+        """
+        Continue based on chances of getting a new valid column.
+        Rough estimation for converting 2 column odds to 3 columns.
+        """
+
         base_odds = self.TWO_COLUMN_ODDS[started[0]][started[1]][self.ODDS]
         base_rolls = self.TWO_COLUMN_ODDS[started[0]][started[1]][self.ROLLS]
         available = [col for col in board.keys() if col not in started and col not in finished]
@@ -465,7 +477,11 @@ class JeffPlayer(Player):
         return base_rolls + new_rolls > turns
 
     def continue_based_on_new_columns(self, board, started, finished, turns):
-        # Continues based on chances of getting two new columns
+        """
+        Continue based on chances of getting 2 new valid columns.
+        Rough estimation for converting 1 column odds to 3 columns.
+        """
+
         base_odds = self.ONE_COLUMN_ODDS[started[0]][self.ODDS]
         base_rolls = self.ONE_COLUMN_ODDS[started[0]][self.ROLLS]
         available = [col for col in board.keys() if col not in started and col not in finished]
@@ -480,6 +496,10 @@ class JeffPlayer(Player):
         return base_rolls + new_rolls > turns 
 
     def opponent_might_win(self, leader_progress):
+        """
+        Check to see if opponent might win in the next turn.
+        """
+
         opponents = {}
         for col in leader_progress.keys():
             leader = leader_progress[col]['leader']
@@ -493,7 +513,12 @@ class JeffPlayer(Player):
                     return True
         return False
 
-    def started_columns_are_contested(self, board, changes, my_progress, started):
+    def started_columns_are_contested(
+        self, board, changes, my_progress, started):
+        """
+        Check to see if any of my columns I've started are currently contested.
+        """
+
         for col in started:
             players = board[col]['players']
             step_size = 1 / board[col]['steps']
@@ -507,11 +532,21 @@ class JeffPlayer(Player):
                     return True
 
     def did_finish_column(self, started, my_progress):
+        """
+        Did I finish a column this turn?
+        """
+
         for col in started:
             if my_progress[col] == 1.0:
                 return True
 
     def is_continuing_turn(self, board, changes):
+        """
+        Decide to continue rolling. Based on if I just won the game,
+        optimal rolling turns, I finished a column, and 
+        number of columns already finished in the game.
+        """
+
         leader_progress, my_progress = self.get_progress(board, changes)
         started_columns = self.get_started_columns(changes)
         finished_columns = self.get_finished_columns(board, my_progress)
@@ -546,6 +581,11 @@ class JeffPlayer(Player):
         return True
 
     def determine_move_value(self, move, leader_progress, my_progress, board, started):
+        """
+        Assign a move value primarily based on odds of continuing turns, with
+        bias towards not starting new columns and finishing columns.
+        """
+
         value = 0
         if len(move) == 2 and move[0] != move[1]:
             col1, col2 = str(move[0]), str(move[1])
@@ -570,7 +610,7 @@ class JeffPlayer(Player):
             if str(c) not in started:
                 value -= self.NEW_COLUMN_PENALTY
 
-            # Make less likely columns more desirable to move on when 3 columns have started
+            # Less likely columns are desirable when 3 columns have started
             if len(started) == 3:
                 value += (1 - self.ONE_COLUMN_ODDS[col][self.ODDS])
 
