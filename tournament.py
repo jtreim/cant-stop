@@ -4,6 +4,7 @@ from errors import GameNotReadyError
 from game import CantStop
 
 from players.example_player import DumbPlayer
+from players.CameronPlayer import CameronPlayer
 from players.player import Player
 
 
@@ -80,5 +81,5 @@ if __name__ == '__main__':
     tournament = Tournament()
     tournament.add_player('Base', Player)
     tournament.add_player('Dumb', DumbPlayer)
-    tournament.add_player('Another Base', Player)
+    tournament.add_player('Cameron', CameronPlayer)
     tournament.run()
