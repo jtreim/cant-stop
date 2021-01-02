@@ -265,7 +265,7 @@ class CantStop:
                 player_move = player.choose_move(
                     moves.copy(), self.board.json().copy(), changes.copy(),
                     invalid_move=True)
-            
+
             # Forcibly end turn if player attempts too many invalid moves
             if move_attempts >= self.MAX_MOVE_ATTEMPTS and player_move not in moves:
                 self.add_missed_steps(name, changes)
@@ -276,7 +276,7 @@ class CantStop:
                         name))
                 continue
 
-            # Add on any changes from the chosen move 
+            # Add on any changes from the chosen move
             changes = self.execute_move(name, player_move, changes)
             if not player.is_continuing_turn(self.board.json(), changes.copy()):
                 player_move = self.END_TURN
