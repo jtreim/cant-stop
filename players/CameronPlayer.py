@@ -21,11 +21,13 @@ class CameronPlayer(Player):
         self.prob_w = .32
         self.opp_lead_w = .2
         
+        ## Example 1 ##
         if (player_args.at('single_r_threshold').exists()):
             self.single_r_threshold = player_args['single_r_threshold']
         else:    
             self.single_r_threshold = .02
        
+        ## Example 2 ##
         if (player_args['full_r_threshold']):
             self.full_r_threshold = player_args['full_r_threshold']
         else:
