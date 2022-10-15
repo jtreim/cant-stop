@@ -18,8 +18,11 @@ class Tournament:
         self.stats = {}
         self.verbose = verbose
 
-    def add_player(self, player_name, player_class):
-        self.players.append((player_name, player_class))
+    def add_player(self, player_name, player_args={}):
+        if player_args:
+            self.players.append((player_name, player_class, player_args))
+        else:
+            self.players.append((player_name, player_class))
         self.stats[player_name] = {
             'total_matches': 0,
             'matches_won': 0,
@@ -66,21 +69,37 @@ class Tournament:
         for i in range(self.MIN_MATCHES):
             self.setup_match()
             self.run_match()
-        print('-------------------- RESULTS --------------------')
-        for key in self.stats.keys():
-            print('Player: {}'.format(key))
-            print('Total Matches: {}'.format(self.stats[key]['total_matches']))
-            print('Matches Won: {}'.format(self.stats[key]['matches_won']))
-            print('Win Rate: {}%'.format(100 * self.stats[key]['win_rate']))
-            print('Columns Finished: {}'.format(self.stats[key]['columns_finished']))
-            print('Turns Dropped: {}'.format(self.stats[key]['turns_dropped']))
-            print('Steps Dropped: {}'.format(self.stats[key]['missed_steps']))
-            print()
+        return self.stats
+        # print('-------------------- RESULTS --------------------')
+        # for key in self.stats.keys():
+            # print('Player: {}'.format(key))
+            # print('Total Matches: {}'.format(self.stats[key]['total_matches']))
+            # print('Matches Won: {}'.format(self.stats[key]['matches_won']))
+            # print('Win Rate: {}%'.format(100 * self.stats[key]['win_rate']))
+            # print('Columns Finished: {}'.format(self.stats[key]['columns_finished']))
+            # print('Turns Dropped: {}'.format(self.stats[key]['turns_dropped']))
+            # print('Steps Dropped: {}'.format(self.stats[key]['missed_steps']))
+            # print()
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+
+
+    i = 0
+    won_matches = 0
+    win_percent = 0
+    while (i < 1000):
+        tournament = Tournament()
+        tournament.add_player('Cameron', CameronPlayer)
+        tournament.add_player('Taylor player', TaylorPlayer)
+        latest_results = tournament.run()
+        won_matches = latest_results['Cameron']['matches_won']
+        win_percent = won_matches / (1000)
+
+        # check how the game went
+        # adjust players as stats demand
+        i += 1
+
     tournament = Tournament()
-    tournament.add_player('Base', Player)
-    tournament.add_player('Cameron', CameronPlayer)
-    tournament.add_player('Taylor player', TaylorPlayer)
-    tournament.run()
+    tournament.add_player('Cameron', CameronPlayer, {'single_r_threshold': .5})
+    tournament.add_player('Cameron', CameronPlayer, {'different_param':.5})
