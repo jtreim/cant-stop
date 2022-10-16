@@ -5,12 +5,13 @@ from game import CantStop
 
 from players.example_player import DumbPlayer
 from players.CameronPlayer import CameronPlayer
+from players.jeff import JeffPlayer
 from players.player import Player
 from players.taylor_player import TaylorPlayer
 
 
 class Tournament:
-    MIN_MATCHES = 100
+    MIN_MATCHES = 1000
 
     def __init__(self, verbose=False):
         self.game = None
@@ -44,7 +45,7 @@ class Tournament:
 
         # Randomly decide on players if not specified otherwise
         if players is None:
-            players = self.get_random_players(3)        
+            players = self.get_random_players(len(self.players))        
 
         self.game = CantStop(player_classes=players, verbose=self.verbose)
 
@@ -80,7 +81,7 @@ class Tournament:
 
 if __name__ == '__main__':
     tournament = Tournament()
-    tournament.add_player('Base', Player)
+    tournament.add_player('Jeff', JeffPlayer)
     tournament.add_player('Cameron', CameronPlayer)
     tournament.add_player('Taylor player', TaylorPlayer)
     tournament.run()
